@@ -50,14 +50,15 @@
   cursor: pointer;
   font-size: 16px;
   font-weight: bold;
-  color: white;
+  color: #F8F9FD;
 }
 
 .connect-wallet-button {
-  background: -webkit-linear-gradient(left, #60c657, #35aee2);
+  background: -webkit-linear-gradient(left, #0F62FF, #35aee2);
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
 }
+
 
 .submit-gif-button {
   background: -webkit-linear-gradient(left, #4e44ce, #35aee2);

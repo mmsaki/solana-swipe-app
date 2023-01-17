@@ -47,6 +47,9 @@ anchor idl init  -f target/idl/solswipe.json `solana address -k target/deploy/so
 <!-- Every time we redeploy we need to tell solana how the program api looks like -->
 anchor idl upgrade
 
+<!-- create new key pair || this resets base account -->
+node src/createKeyPair.js  
+
 ## Rust
 
 - [Module](https://stevedonovan.github.io/rust-gentle-intro/4-modules.html?utm_source=buildspace.so&utm_medium=buildspace_project)
