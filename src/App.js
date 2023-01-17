@@ -1,12 +1,17 @@
 import './App.css';
 import React, {useEffect, useState} from 'react';
-import twitterLogo from './assets/twitter-logo.svg';
 import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
 import { Program, AnchorProvider, web3 } from '@project-serum/anchor';
+import { Buffer } from 'buffer';
+import kp from './keypair.json';
+import { Metadata } from '@metaplex-foundation/mpl-token-metadata';
 
+window.Buffer = Buffer;
 
 const { SystemProgram, Keypair } = web3; // system program is used to create accounts, solana runtime
-let baseAccount = Keypair.generate(); // account that holds gif data
+const arr = Object.values(kp._keypair.secretKey);
+const secret = new Uint8Array(arr);
+const baseAccount = Keypair.fromSecretKey(secret);
 const programID = new PublicKey("2JAFDEu7wf4BivMXw7f4dgqZMrAmNqVGjRi57jij5LUZ"); // run solana address -k target/deploy/myepicproject-keypair.json
 const network = clusterApiUrl('devnet');
 
@@ -16,8 +21,6 @@ const opts = {
 };
 
 // Constants
-const TWITTER_HANDLE = '_buildspace';
-const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const TEST_GIFS = [
   "https://i.giphy.com/media/eIG0HfouRQJQr1wBzz/giphy.webp",
   "https://media3.giphy.com/media/L71a8LW2UrKwPaWNYM/giphy.gif?cid=ecf05e47rr9qizx2msjucl1xyvuu47d7kf25tqt2lvo024uo&rid=giphy.gif&ct=g",
@@ -32,11 +35,17 @@ const getProvider = () => {
   return provider;
 };
 
+  const getProgram = async () => {
+    const idl = await Program.fetchIdl(programID, getProvider());
+    return new Program(idl, programID, getProvider());
+  };
+
 
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [gifList, setGifList] = useState([]);
+
   const checkIfWalletIsConnected = async () => {
   if (window?.solana?.isPhantom) {
     console.log("Phantom wallet found! ✨");
@@ -63,19 +72,57 @@ const App = () => {
   };
 
   const sendGif = async () => {
-    if (inputValue.length > 0) {
-      console.log("Gif link: ", inputValue);
-      setGifList([...gifList, inputValue]);
-      setInputValue("");
-    } else {
+    if (inputValue.length === 0) {
+      console.log("No gif link given!");
+      return;
+    }
+    setInputValue("");
+    console.log("Sending gif to the blockchain...", inputValue);
+    try {
+      const provider = await getProvider();
+      const program = await getProgram();
+
+      await program.rpc.addGif(inputValue,
+        {
+          accounts: {
+            baseAccount: baseAccount.publicKey,
+            user: provider.wallet.publicKey,
+        },
+      });
+      console.log("Gif sent to the program", inputValue);
+      await getGifList();
+    } catch (error) {
       console.log("Please enter a gif link!");
     }
   };
 
   const renderNotConnectedContainer = () => (
-    <button className="cta-button connect-wallet-button" onClick={connectWallet}>Connect Wallet</button>
+    <><div>
+      <img src="swipe.svg" alt="swipe app logo" />
+      <p className="sub-text">
+        Meet people in Web3 that has something in common with you! ✨
+      </p>
+    </div><button className="cta-button connect-wallet-button" onClick={connectWallet}>Connect Wallet</button></>
   );
-  
+
+  const getNFTs = async () => {
+    const connection = new Connection('devnet');
+    const provider = await getProvider();
+    const ownerPublickey = provider.wallet.publicKey;
+    const nftsmetadata = await Metadata.findDataByOwner(connection, ownerPublickey);
+
+    console.log(nftsmetadata)
+
+    let counter = nftsmetadata.length;
+    console.log("counter: " + counter);
+
+    let counterI = 0;
+    for (var i in nftsmetadata) {
+      console.log(nftsmetadata[i].mint);
+      counterI += 1;
+    }
+  };
+
   const renderConnectedContainer = () => {
     // if we hit this it means the program hasn't been been initialized yet
     if (!gifList) {
@@ -99,7 +146,6 @@ const App = () => {
           <input
             type="text"
             placeholder="Enter GIF URL"
-            className="input"
             value={inputValue}
             onChange={onInputChange}
           />
@@ -114,6 +160,7 @@ const App = () => {
             <div className="gif-item" key={index}>
               {/* We use index as the key instead, also, the src is now item.gifLink */}
               <img src={item.gifLink} alt="gif" />
+              <div className="gif-info">{item.userAddress.toString()}</div>
             </div>
           ))}
         </div>
@@ -121,27 +168,13 @@ const App = () => {
     );
   };
 
-  useEffect(() => {
-    const onLoad = async () => {
-      await checkIfWalletIsConnected();
-    };
-    window.addEventListener('load', onLoad);
-    return () => window.removeEventListener('load', onLoad);
-  }, []);
-
-  const getProgram = async () => {
-    const idl = await Program.fetchIdl(programID, getProvider());
-    return new Program(idl, programID, getProvider());
-  };
-
-
   const getGifList = async () => {
     try {
       const program = await getProgram();
       const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
 
       console.log("Got the account: ", account)
-      getGifList(account.gifList);
+      setGifList(account.gifList);
       
     } catch (err) {
       console.log("Error in getGifList: ", err);
@@ -151,7 +184,7 @@ const App = () => {
 
   const createGifAccount = async () => {
     try {
-      const provider = getProvider();
+      const provider = await getProvider();
       const program = await getProgram();
 
       console.log("Creating account...");
@@ -171,35 +204,39 @@ const App = () => {
   };
 
   useEffect(() => {
+    const onLoad = async () => {
+      await checkIfWalletIsConnected();
+    };
+    window.addEventListener("load", onLoad);
+    return () => window.removeEventListener("load", onLoad);
+  }, []);
+
+  useEffect(() => {
     if (currentAccount) {
       console.log("Current account: ", currentAccount);
       console.log('Fetching GIFs list...');
       // call solana program to get the list of gifs
       getGifList();
       // set state
-      setGifList(TEST_GIFS);
+      // setGifList(TEST_GIFS);
     }
-  }, [currentAccount]);
+  }, []);
+
+  useEffect(() => {
+    const onLoad = async () => {
+      await checkIfWalletIsConnected();
+    };
+    window.addEventListener('load', onLoad);
+    return () => window.removeEventListener('load', onLoad);
+  }, []);
+
 
   return (
     <div className="App">
       <div className={currentAccount ? "authed-container" : "container"}>
         <div className="header-container">
-          <p className="header">🖼 GIF Portal</p>
-          <p className="sub-text">
-            View your GIF collection in the metaverse ✨
-          </p>
           {!currentAccount && renderNotConnectedContainer()}
           {currentAccount && renderConnectedContainer()}
-        </div>
-        <div className="footer-container">
-          <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
-          <a
-            className="footer-text"
-            href={TWITTER_LINK}
-            target="_blank"
-            rel="noreferrer"
-          >{`built on @${TWITTER_HANDLE}`}</a>
         </div>
       </div>
     </div>
