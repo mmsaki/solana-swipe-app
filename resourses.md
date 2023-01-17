@@ -5,3 +5,54 @@
 - [Have no experience in react?](https://scrimba.com/learn/learnreact)
 - [Solana base code for my app?](https://github.com/buildspace/gif-portal-starter?utm_source=buildspace.so&utm_medium=buildspace_project)
 - [Establishing Connection Phantom wallet?](https://docs.phantom.app/solana/integrating-phantom/extension-and-in-app-browser-web-apps/establishing-a-connection#eagerly-connecting?utm_source=buildspace.so&utm_medium=buildspace_project)
+- [Anchor Discord](https://discord.com/invite/8HwmBtt2ss?utm_source=buildspace.so&utm_medium=buildspace_project)
+- [Understanding Solana Accounts and state?](https://docs.solana.com/developing/programming-model/accounts?utm_source=buildspace.so&utm_medium=buildspace_project)
+
+## initialize anchor
+
+<!-- install anchor cli -->
+cargo install --git <https://github.com/project-serum/anchor> anchor-cli --locked
+
+<!-- install Anchor's npm module and Solana Web3 JS  -->
+yarn add @project-serum/anchor @solana/web3.js
+
+<!-- initialize anchor project -->
+anchor init myepicproject --javascript
+cd myepicproject
+
+<!-- run anchor test NOTE: make sure solanatest validator is not running, or it will conflict -->
+anchor test
+
+ <!-- set local host -->
+solana config set --url localhost
+solana config get
+
+<!-- run test validator -->
+solana-test-validator
+
+<!-- Update Anchor.toml and lib.rs w/ new program id. Make sure Anchor.toml is on devnet. -->
+<!-- This will create a new build for us with a program id -->
+solana address -k target/deploy/solswipe-keypair.json  
+
+<!-- Build after updating program id -->
+anchor build
+
+<!-- deploy to devnet -->
+anchor deploy
+
+## Rust
+
+- [Module](https://stevedonovan.github.io/rust-gentle-intro/4-modules.html?utm_source=buildspace.so&utm_medium=buildspace_project)
+- [Module Results](https://doc.rust-lang.org/std/result/?utm_source=buildspace.so&utm_medium=buildspace_project)
+- [Macros](https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/first-edition/macros.html?utm_source=buildspace.so&utm_medium=buildspace_project)
+- [Vectors array type](https://doc.rust-lang.org/std/vec/struct.Vec.html?utm_source=buildspace.so&utm_medium=buildspace_project)
+- [AnchorSerialize](https://docs.rs/anchor-lang/0.4.0/anchor_lang/trait.AnchorSerialize.html?utm_source=buildspace.so&utm_medium=buildspace_project)
+
+## Issues
+
+We then say space = 9000 which will allocate 9000 bytes of space for our account. You can change this # if you wanted, but, 9000 bytes is enough for the program we'll be building here!
+Why are we paying for an account? Well — storing data isn't free! How Solana works is users will pay "rent" on their accounts. You can read more on it here and how rent is calculated. Pretty wild, right? If you don't pay rent, validators will clear the account!
+
+Read: [Storage Rent Economics](https://docs.solana.com/storage_rent_economics?utm_source=buildspace.so&utm_medium=buildspace_project)
+
+"With this approach, accounts with two-years worth of rent deposits secured are exempt from network rent charges. By maintaining this minimum-balance, the broader network benefits from reduced liquidity and the account holder can rest assured that their Account::data will be retained for continual access/usage."
