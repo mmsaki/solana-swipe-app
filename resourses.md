@@ -7,6 +7,7 @@
 - [Establishing Connection Phantom wallet?](https://docs.phantom.app/solana/integrating-phantom/extension-and-in-app-browser-web-apps/establishing-a-connection#eagerly-connecting?utm_source=buildspace.so&utm_medium=buildspace_project)
 - [Anchor Discord](https://discord.com/invite/8HwmBtt2ss?utm_source=buildspace.so&utm_medium=buildspace_project)
 - [Understanding Solana Accounts and state?](https://docs.solana.com/developing/programming-model/accounts?utm_source=buildspace.so&utm_medium=buildspace_project)
+- [Solana Programs are upgradable?](https://docs.solana.com/cli/deploy-a-program#redeploy-a-program?utm_source=buildspace.so&utm_medium=buildspace_project)
 
 ## initialize anchor
 
@@ -39,6 +40,12 @@ anchor build
 
 <!-- deploy to devnet -->
 anchor deploy
+
+<!-- How do we give idl to our web app? This is telling anchor to upload our idl for our program address, nice!!-->
+anchor idl init  -f target/idl/solswipe.json `solana address -k target/deploy/solswipe-keypair.json`
+
+<!-- Every time we redeploy we need to tell solana how the program api looks like -->
+anchor idl upgrade
 
 ## Rust
 
