@@ -1,0 +1,23 @@
+.footer-box{
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  position: fixed;
+  bottom: 40px;
+}
+.footer-buttons-container {
+  width: 80%;
+  justify-content: space-between;
+  align-items: center;
+
+}
+.footer-buttons img {
+  padding:0;
+  height: 70px;
+  width: 70px;
+}
+
+.button-md img {
+  height: 50px;
+}
