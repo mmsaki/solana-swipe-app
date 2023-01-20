@@ -51,6 +51,12 @@ solana config get
 solana-test-validator
 ```
 
+- Create new solana keypair
+
+```bash
+solana-keygen new
+```
+
 - Update Anchor.toml and lib.rs w/ new program id. Make sure Anchor.toml is on devnet.
 - This will create a new build for us with a program id
 
