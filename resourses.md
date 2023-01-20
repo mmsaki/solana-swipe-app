@@ -56,6 +56,12 @@ solana-test-validator
 ```bash
 solana-keygen new
 ```
+- Create a default signer run
+
+```bash
+solana-keygen new -o target/deploy/solswipe-keypair.json
+```
+
 
 - Update Anchor.toml and lib.rs w/ new program id. Make sure Anchor.toml is on devnet.
 - This will create a new build for us with a program id
