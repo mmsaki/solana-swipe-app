@@ -1,5 +1,6 @@
-# Lean React
+# Solana program references
 
+```
 - [Cool Meme](https://giphy.com/clips/hamlet-jJjb9AUHOiP3nJJMdy?utm_source=buildspace.so&utm_medium=buildspace_project)
 - [Want react beginner docs?](https://reactjs.org/docs/getting-started.html?utm_source=buildspace.so&utm_medium=buildspace_project)
 - [Have no experience in react?](https://scrimba.com/learn/learnreact)
@@ -8,8 +9,9 @@
 - [Anchor Discord](https://discord.com/invite/8HwmBtt2ss?utm_source=buildspace.so&utm_medium=buildspace_project)
 - [Understanding Solana Accounts and state?](https://docs.solana.com/developing/programming-model/accounts?utm_source=buildspace.so&utm_medium=buildspace_project)
 - [Solana Programs are upgradable?](https://docs.solana.com/cli/deploy-a-program#redeploy-a-program?utm_source=buildspace.so&utm_medium=buildspace_project)
+```
 
-## initialize anchor
+## Anchor commands
 
 - install anchor cli
 cargo install --git <https://github.com/project-serum/anchor> anchor-cli --locked
