@@ -59,7 +59,7 @@ function SubmitNFT() {
       });
       console.log("Gif sent to the program", inputValue);
     } catch (error) {
-      console.log("Please enter a gif link!");
+      console.log("Please enter a link!");
     }
   };
   return (

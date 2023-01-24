@@ -28,9 +28,3 @@ h1 {
   font-family: 'ClashGrotesk-Regular';
   font-style: normal;
 }
-
-.container {
-  heaight: 100vh;
-  display: flex;
-  flex-direction: column;
-}
