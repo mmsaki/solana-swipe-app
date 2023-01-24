@@ -1,8 +1,7 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
 import LogIn from "./components/LogIn";
-import Connected from "./components/Connected";
-
+import TinderCards from "./components/TinderCards";
 
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState(null);
@@ -26,9 +25,7 @@ const App = () => {
   );
 
   const renderConnectedContainer = () => {
-    return (
-      <Connected />
-    );  
+    return <TinderCards />;  
   };
 
   useEffect(() => {
@@ -41,11 +38,17 @@ const App = () => {
 
   return (
     <div className="app">
+      <link
+        href="https://fonts.googleapis.com/css?family=space-grotesk&display=swap"
+        rel="stylesheet"
+      />
+      <link
+        href="https://fonts.googleapis.com/css?family=space-grotesk&display=swap"
+        rel="stylesheet"
+      />
       <div className={currentAccount ? "authed-container" : "container"}>
-        <div>
           {!currentAccount && renderNotConnectedContainer()}
           {currentAccount && renderConnectedContainer()}
-        </div>
       </div>
     </div>
   );
