@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 import { useState, useMemo, useRef } from "react";
-import TinderCard from 'react-tinder-card'
-import "./TinderCards.css"
+import TinderCard from "react-tinder-card";
+import "./TinderCards.css";
 
 function TinderCards() {
   // hooks are used to store data in react
@@ -76,7 +76,7 @@ function TinderCards() {
   };
 
   return (
-    <div className='authed-container'>
+    <div className="authed-container">
       <div className="cardContainer">
         {people.map((character, index) => (
           <TinderCard
@@ -119,13 +119,9 @@ function TinderCards() {
         <h2 key={lastDirection} className="infoText">
           You swiped {lastDirection}
         </h2>
-      ) : (
-        <h2 className="infoText">
-          Swipe a card or press a button to get Restore Card button visible!
-        </h2>
-      )}
+      ) : []}
     </div>
   );
 }
 
-export default TinderCards
+export default TinderCards;

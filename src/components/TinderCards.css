@@ -50,7 +50,7 @@ h2 {
 .swipe {
   position: absolute;
   width: 90vw;
-  height: 70vh;
+  height: 80vh;
 }
 
 .cardContainer {
@@ -89,22 +89,22 @@ h2 {
 }
 
 .infoText {
-  position: relative;
+  position: absolute;
   bottom: 0;
-  justify-content: center;
-  /* display: flex; */
+  display: flex;
   color: #fff;
   animation-name: popup;
   animation-duration: 800ms;
 }
 
 .buttons {
-  margin: 2px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  position: fixed;
-  bottom: 40px;
-  
+  grid-template-row: 1fr 1fr 1fr;
+  margin: 0px;
+  bottom: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: row !important;
 }
 
 /* @media (max-width: 120px) {
@@ -119,12 +119,12 @@ h2 {
   border-radius: 5px;
   border: none;
   color: #fff;
-  font-size: 18px;
+  font-size: 14px;
   background-color: #9198e5;
   transition: 200ms;
   margin: 10px;
   font-weight: bolder;
-  width: 160px;
+  width: 120px;
   box-shadow: 0px 0px 30px 0px rgba(0,0,0,0.10);
 }
 
